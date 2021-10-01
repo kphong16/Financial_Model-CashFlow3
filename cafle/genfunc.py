@@ -7,6 +7,22 @@ from datetime import datetime
 from datetime import timedelta
 
 
+PY = 1/3.305785
+class Area:
+    def __init__(self, m2=None, py=None, roundunit=2):
+        self.m2 = m2
+        self.py = py
+        self.roundunit = roundunit
+        self._intlz()
+        self.area = (self.m2, self.py)
+    
+    def _intlz(self):
+        if all([any([self.m2, self.m2==0]), not self.py]):
+            self.py = round(self.m2 * PY, self.roundunit)
+        if all([any([self.py, self.py==0]), not self.m2]):
+            self.m2 = round(self.py / PY, self.roundunit)
+
+
 def is_iterable(data):
     if type(data) == str:
         return False
