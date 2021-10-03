@@ -72,6 +72,7 @@ def log10(val):
         else:
             return tmpval
             
+            
 def round_up(number:float, decimals:int=2):
     """
     Returns a value rounded up to a specific number of decimal places.
@@ -83,3 +84,7 @@ def round_up(number:float, decimals:int=2):
 
     factor = 10 ** decimals
     return math.ceil(number * factor) / factor
+    
+    
+def percent(val:float):
+    return val / 100
