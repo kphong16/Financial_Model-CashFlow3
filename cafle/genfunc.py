@@ -52,9 +52,11 @@ def limited(val, upper=None, lower=None):
     return tmp_val
     
     
-def rounding(df):
+def rounding(df, rate=None):
     rslt_df = df.copy()
     for key, val in rslt_df.items():
+        if rate and key in rate:
+            rslt_df[key] = rslt_df[key] * 100
         if all([isinstance(x, (int, float)) for x in rslt_df[key]]):
             if all([x < 100 for x in rslt_df[key]]):
                 rslt_df[key] = rslt_df[key].fillna(0).apply(lambda x: f"{x:,.1f}")
