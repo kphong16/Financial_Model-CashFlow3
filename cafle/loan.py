@@ -52,7 +52,7 @@ class Loan(object):
                  index, # basic index class
                  idxfn = None, # financial index class
                  amt_ntnl = 0, # float
-                 amt_ntnl_once = None,
+                 amt_intl = None,
                  rate_fee = 0.0, # float
                  rate_IR = 0.0, # float
                  IRcycle = 1, # int, months
@@ -81,8 +81,8 @@ class Loan(object):
             
         # 주요 변수 입력
         self.amt_ntnl = amt_ntnl
-        if amt_ntnl_once:
-            self.amt_ntnl_once = amt_ntnl_once
+        if amt_intl:
+            self.amt_intl = amt_intl
         self.rate_fee = rate_fee
         self.rate_IR = rate_IR
         self.IRcycle = IRcycle
@@ -230,7 +230,7 @@ class Intlz_loan:
                  idxfn = None, # financial index class
                  title = [], # list, loan name
                  amt_ntnl = [], # list/float, loan notional amount
-                 amt_ntnl_once = None,
+                 amt_intl = None,
                  rate_fee = [], # list/float
                  rate_IR = [], # list/float
                  IRcycle = 1, # int or list / default 1, months
@@ -245,7 +245,7 @@ class Intlz_loan:
         self.title = title
         self.len = len(title)
         self.amt_ntnl = amt_ntnl
-        self.amt_ntnl_once = amt_ntnl_once
+        self.amt_intl = amt_intl
         self.rate_fee = rate_fee
         self.rate_IR = rate_IR
         
@@ -268,7 +268,7 @@ class Intlz_loan:
             tmpinstnc = Loan(index = self.index,
                              idxfn = self.idxfn,
                              amt_ntnl = self.amt_ntnl[i],
-                             amt_ntnl_once = self.amt_ntnl_once[i],
+                             amt_intl = self.amt_intl[i],
                              rate_fee = self.rate_fee[i],
                              rate_IR = self.rate_IR[i],
                              IRcycle = self.IRcycle[i],

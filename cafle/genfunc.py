@@ -58,7 +58,7 @@ def rounding(df, rate=None):
         if rate and key in rate:
             rslt_df[key] = rslt_df[key] * 100
         if all([isinstance(x, (int, float)) for x in rslt_df[key]]):
-            if all([x < 100 for x in rslt_df[key]]):
+            if all([x < 100 or pd.isnull(x) for x in rslt_df[key]]):
                 rslt_df[key] = rslt_df[key].fillna(0).apply(lambda x: f"{x:,.1f}")
             else:
                 rslt_df[key] = rslt_df[key].fillna(0).apply(lambda x: f"{x:,.0f}")
