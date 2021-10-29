@@ -37,7 +37,7 @@ class Intlz_sales_sellinlots:
         
     def _intlz(self):
         for no, prdt in enumerate(self.prdtlst):
-            tmp_acc = Account(self.index)
+            tmp_acc = Account(self.index, title=prdt)
             self.dct[prdt] = tmp_acc
             setattr(self, prdt, tmp_acc)
             
@@ -84,7 +84,7 @@ class Intlz_costs:
                 **kwargs):
         if title not in self.title:
             self.title.append(title)
-            tmp_acc = Account(self.index)
+            tmp_acc = Account(self.index, title=title)
             self.dct[title] = tmp_acc
             setattr(self, title, tmp_acc)
         
@@ -121,7 +121,7 @@ class Intlz_accounts:
     
     def _intlz(self):
         for no, accname in enumerate(self.accname):
-            tmp_acc = Account(self.index)
+            tmp_acc = Account(self.index, title=self.accname)
             self.dct[accname] = tmp_acc
             setattr(self, accname, tmp_acc)
             
@@ -145,7 +145,7 @@ class Mngmnt_sls:
             try:
                 # input sales amount on this index no.
                 self.sls.addscdd(self.idxno, sls_amt)
-                self.sls.addamt(self.idxno, sls_amt)
+                self.sls.addamt(self.idxno, sls_amt, rcvfrom="sales_addscdd")
             
                 # input sales cash schedule on sales cash index.
                 sls_csh = self.sls.csh[sls_odr]

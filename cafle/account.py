@@ -99,7 +99,7 @@ class Account(object):
              'add_rsdl_cum', 'sub_rsdl_cum']
     DFCOL_smry = ['add_scdd', 'sub_scdd', 
                   'bal_strt', 'amt_add', 'amt_sub', 'bal_end']
-    JNLCOL = ['amt_add', 'amt_sub', 'note']
+    JNLCOL = ['amt_add', 'amt_sub', 'rcvfrom', 'payto', 'note']
     def _setdf(self):
         # DataFrame 초기화
         self._df = pd.DataFrame(np.zeros([len(self.index), len(self.DFCOL)]),
@@ -174,14 +174,12 @@ class Account(object):
         self._cal_bal()
         
     @listwrapper
-    def addamt(self, index, amt):
+    def addamt(self, index, amt, rcvfrom=None, note="add_amt"):
         if amt == 0:
             return
             
         # 분개장(journal)에 데이터 입력
-        tmpjnl = pd.DataFrame([[amt, 0, "add_amt"]], \
-                              columns=self.JNLCOL, index=[index])
-        self.jnl = pd.concat([self.jnl, tmpjnl])
+        self.iptjnl(index, amt, 0, rcvfrom, None, note)
         
         # DataFrame에 데이터 입력
         self._df.loc[index, 'amt_add'] += amt
@@ -190,14 +188,12 @@ class Account(object):
         self._cal_bal()
         
     @listwrapper
-    def subamt(self, index, amt):
+    def subamt(self, index, amt, payto=None, note="sub_amt"):
         if amt == 0:
             return
             
         # 분개장(journal)에 데이터 입력
-        tmpjnl = pd.DataFrame([[0, amt, "sub_amt"]], \
-                              columns=self.JNLCOL, index=[index])
-        self.jnl = pd.concat([self.jnl, tmpjnl])
+        self.iptjnl(index, 0, amt, None, payto, note)
         
         # DataFrame에 데이터 입력
         self._df.loc[index, "amt_sub"] += amt
@@ -206,15 +202,21 @@ class Account(object):
         self._cal_bal()
         
     @listwrapper
-    def iptamt(self, index, amt):
+    def iptamt(self, index, amt, rcvfrom=None, payto=None, note=None):
         if amt == 0:
             return
         
         # amt가 양수인 경우 addamt 실행, 음수인 경우 subamt 실행
         if amt > 0:
-            self.addamt(index, amt)
+            self.addamt(index, amt, rcvfrom, note)
         else:
-            self.subamt(index, -amt)
+            self.subamt(index, -amt, payto, note)
+    
+    def iptjnl(self, index, addamt, subamt, rcvfrom=None, payto=None, note=None):
+        tmpjnl = pd.DataFrame([[addamt, subamt, rcvfrom, payto, note]], \
+                              columns=self.JNLCOL, index=[index])
+        self.jnl = pd.concat([self.jnl, tmpjnl])
+    
     #### INPUT DATA ####
 
 
@@ -308,10 +310,10 @@ class Account(object):
 
 
     #### ACCOUNT TRANSFER ####
-    def send(self, index, amt, account):
+    def send(self, index, amt, account, note=None):
         # 본 account에서 입력된 account로 계좌 이체
-        self.subamt(index, amt)
-        account.addamt(index, amt)
+        self.subamt(index, amt, account.title, note)
+        account.addamt(index, amt, self.title, note)
     #### ACCOUNT TRANSFER ####
 
 
