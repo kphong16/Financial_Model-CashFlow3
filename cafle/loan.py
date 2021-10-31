@@ -242,14 +242,13 @@ class Loan(object):
                            lower=[0])
         return amt_rsdl
     
-    
-    
-    #### repayment ####
     def repay_amt(self, idxno, amtrpy):
+        """미상환 대출원금 잔액 한도 내 상환금액 계산"""
         tmprpy = limited(amtrpy, 
                          upper=[self.ntnl_bal_end(idxno)],
                          lower=[0])
         return tmprpy
+    #### repayment ####
     #####################################################
     # fee 입금 함수, IR 입금 함수, ntnl 출금, 입금 함수 추가 필요 #
 
