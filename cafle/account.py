@@ -10,10 +10,10 @@ from functools import wraps
 
 # import genfunc
 # from index import Index
-from . import genfunc
+from .genfunc import *
 from .index import Index, PrjtIndex
 
-__all__ = ['Account', 'Merge']
+__all__ = ['Account', 'Merge', 'Intlz_accounts']
 
 class Account(object):
     """
@@ -121,7 +121,7 @@ class Account(object):
         def wrapped(self, *args):
             is_iter = True
             for arg in args:
-                if genfunc.is_iterable(arg) is False:
+                if is_iterable(arg) is False:
                     is_iter = False
             if is_iter is True:
                 ilen = len(args[0])
@@ -306,6 +306,15 @@ class Account(object):
         기존에 정의되어 있지 않은 속성이 입력될 경우, 객체를 조회하여 속성을 반환
         """ 
         return self.__dict__[attr]
+        
+        
+    # Calculate the amount required in excess of the balance.
+    def amt_rqrd_excess(self, idxno, rqrdamt, minunit = 100):
+        """총 필요한 금액(rqrdamt)에 대하여 계좌 잔액을 초과하는 금액"""
+        amt_rqrd = max(rqrdamt - self.bal_end[idxno], 0)
+        amt_rqrd = round_up(amt_rqrd, -log10(minunit))
+        return amt_rqrd
+    
     #### OUTPUT DATA ####
 
 
@@ -514,4 +523,33 @@ class _idxsrch:
         instance.__dict__[self._name] = value
 """     
         
-    
+
+class Intlz_accounts:
+    def __init__(self,
+                 index, # index
+                 accname, # list
+                 ):
+        self.index = index
+        self.accname = accname
+
+        self.dct = {}
+        self._intlz()
+        
+    def __len__(self):
+        return len(self.accname)
+        
+    def _intlz(self):
+        for no, accname in enumerate(self.accname):
+            tmp_acc = Account(self.index, title=accname)
+            self.dct[accname] = tmp_acc
+            setattr(self, accname, tmp_acc)
+            
+        self.ttl = Merge(self.dct)
+        for no, accname in enumerate(self.accname):
+            setattr(self.ttl, accname, getattr(self, accname))
+                 
+                 
+                 
+                 
+                 
+     

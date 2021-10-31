@@ -23,6 +23,17 @@ class Area:
             self.m2 = round(self.py / PY, self.roundunit)
 
 
+class EmptyClass:
+    def __init__(self):
+        pass
+    
+    def __getattr__(self, attr):
+        return self.__dict__[attr]
+    
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
+
 def is_iterable(data):
     if type(data) == str:
         return False

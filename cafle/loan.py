@@ -8,10 +8,10 @@ from datetime import timedelta
 from datetime import date
 from functools import wraps
 
-# import genfunc
-# from index import Index
+# import 
+# from ingenfuncdex import Index
 # from account import Account, Merge
-from . import genfunc
+from .genfunc import *
 from .index import Index, PrjtIndex
 from .account import Account, Merge
 
@@ -196,6 +196,60 @@ class Loan(object):
         self.is_repaid = True
     #### set loan repaid all ####
     
+    
+    #### calculate IR amount to pay ####
+    def IRamt_topay(self, idxno):
+        tmp_ntnl = -self.ntnl.bal_strt[idxno]
+        tmp_IRamt = tmp_ntnl * self.IR.rate_cycle
+        return tmp_IRamt
+    #### calculate IR amount to pay ####
+    
+    
+    #### withdraw loan ####
+    def wtdrw(self, idxno, amt, acc):
+        """ idxno에 대응하는 누적인출가능잔액 확인.
+        누적인출가능잔액 내에서 인출필요금액을 계좌로 이체
+        """
+        if not self.is_wtdrbl:
+            return 0
+        if self.is_repaid:
+            return 0
+            
+        ntnl_sub_rsdl = self.ntnl.sub_rsdl_cum[idxno] # 누적 인출 가능 대출원금
+        tmp_wtdrw = limited(amt,
+                            upper=[ntnl_sub_rsdl],
+                            lower=[0])
+        self.ntnl.send(idxno, tmp_wtdrw, acc)
+        return tmp_wtdrw
+    #### withdraw loan ####
+    
+    
+    #### repayment ####
+    def ntnl_bal_end(self, idxno):
+        """미상환 대출원금 잔액"""
+        return -self.ntnl.bal_end[idxno]
+        
+    def amt_rpy_exptd(self, idxno):
+        """상환 기일이 도래한 대출원금"""
+        rpy_amt = limited(self.ntnl.add_rsdl_cum[idxno],
+                          upper=[self.ntnl_bal_end(idxno)],
+                          lower=[0])
+        return rpy_amt
+        
+    def ntnl_sub_rsdl(self):
+        """잔여 대출 한도"""
+        amt_rsdl = limited(self.ntnl.sub_rsdl_cum[idxno],
+                           lower=[0])
+        return amt_rsdl
+    
+    
+    
+    #### repayment ####
+    def repay_amt(self, idxno, amtrpy):
+        tmprpy = limited(amtrpy, 
+                         upper=[self.ntnl_bal_end(idxno)],
+                         lower=[0])
+        return tmprpy
     #####################################################
     # fee 입금 함수, IR 입금 함수, ntnl 출금, 입금 함수 추가 필요 #
 
@@ -223,6 +277,7 @@ class Merge_loan(Merge):
     def is_repaid(self):
         tmp_rslt = all([val.is_repaid for val in self.dct.values()])
         return tmp_rslt
+      
         
 class Intlz_loan:
     def __init__(self,
@@ -249,7 +304,7 @@ class Intlz_loan:
         self.rate_fee = rate_fee
         self.rate_IR = rate_IR
         
-        if genfunc.is_iterable(IRcycle):
+        if is_iterable(IRcycle):
             self.IRcycle = IRcycle
         elif isinstance(IRcycle, int):
             self.IRcycle = [IRcycle for _ in range(self.len)]
