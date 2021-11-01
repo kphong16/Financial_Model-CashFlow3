@@ -191,7 +191,7 @@ class Loan(object):
             return
         if -self.ntnl.bal_end[date] > 0:
             return
-        if self.ntnl.sub_rsdl_cum[date] > 0:
+        if (self.ntnl.sub_rsdl_cum[date] - self.ntnl.add_rsdl_cum[date]) > 0:
             return
         self.is_repaid = True
     #### set loan repaid all ####
@@ -236,7 +236,7 @@ class Loan(object):
                           lower=[0])
         return rpy_amt
         
-    def ntnl_sub_rsdl(self):
+    def ntnl_sub_rsdl(self, idxno):
         """잔여 대출 한도"""
         amt_rsdl = limited(self.ntnl.sub_rsdl_cum[idxno],
                            lower=[0])
