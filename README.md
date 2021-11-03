@@ -1,20 +1,16 @@
-# 재무모델(Financial cashflow model) 작성을 위한 모듈
+# "cafle", the cash flow estimating tool
 
 ### cafle_module
-"cafle_module"은
-각종 사업 검토시 재무적인 측면에서 사업의 현금흐름을 추정하는데 활용 가능한 모듈입니다.
+"cafle" is a module that can be used to estimate the cash flow of a alternative investment when reviewing various investment project.
+"Index", "Account" and "Loan" modules on "cafle" make it easier to estimate the cash flow of the project.
 
-Index, Account와 Loan 모듈을 사용하면 재무기획자 입장에서 검토 중인 사업의 현금흐름을 좀 더 용이하게 추정할 수 있습니다.
+Financial planners and investors in charge of investment project frequently estimate cash flows for investment projects and review the adequacy of investment.
+Since I mainly focus on real estate development projects and real estate investment, I prepared examples focusing on real estate development projects. However, I think it can be used where various financial models are needed, such as other infrastructure projects and new projects.
 
-재무기획자, 프로젝트 성 투자를 담당하는 투자자 등은 수시로 기획사업 및 투자대상 등에 대하여 현금흐름을 추정하면서 투자 적정성을 검토합니다.
-저는 주로 부동산 개발사업 및 부동산 투자를 업으로 하고 있으므로, 부동산 개발사업 중심으로 예시를 작성하였습니다.
-하지만, 다른 인프라 사업, 신규 추진 사업 등 각종 재무모델이 필요한 곳에 사용 가능할 것으로 생각됩니다.
+It often takes at least a few days to weeks to create a financial model with Excel, which also takes similar time to modify or create a new model for individual business and investment requirements. When the size of the model grows above a certain level, it is not common to interpret it or modify it.
 
-엑셀로 재무모델을 작성하는데에는 최소 수일 내지 수주의 시간이 소요되곤 하며,
-이 또한 개별 사업 및 투자건에 맞춰 모델을 수정하거나, 신규 작성하는데에도 그와 유사한 시간이 소요됩니다.
-모델의 규모가 일정 수준 이상 커지면 이를 해석하는 것도, 수정하는 것도 보통 일이 아닙니다.
+This module will greatly save the time spent using Excel.
 
-엑셀을 붙잡고 있는 시간과 노력을 크게 줄여보고자 모듈 작성을 시작하였습니다.
 
 ### Example
-"Case2_CF_modeling3.ipynb" 파일은 가장 최근 기준으로 cafle_module을 적용하여 재무모델을 작성한 사례입니다.
+"Case2_CF_modeling3.ipynb" is the recent case of applying the module. 
