@@ -1,8 +1,8 @@
 # 재무모델(Financial cashflow model) 작성을 위한 모듈
 
-### PrjtCF_module
-"PrjtCF_module"은
-각종 사업 검토시 재무적인 측면에서 사업의 현금흐름을 추정하는데 적용 가능한 모듈입니다.
+### cafle_module
+"cafle_module"은
+각종 사업 검토시 재무적인 측면에서 사업의 현금흐름을 추정하는데 활용 가능한 모듈입니다.
 
 Index, Account와 Loan 모듈을 사용하면 재무기획자 입장에서 검토 중인 사업의 현금흐름을 좀 더 용이하게 추정할 수 있습니다.
 
@@ -17,5 +17,4 @@ Index, Account와 Loan 모듈을 사용하면 재무기획자 입장에서 검�
 엑셀을 붙잡고 있는 시간과 노력을 크게 줄여보고자 모듈 작성을 시작하였습니다.
 
 ### Example
-Financial_Model_CashFlow1의 경우 개발 후 운영사업의 사례를 적용하였으며,
-본건 CashFlow2의 경우 개발 및 분양 사업의 사례를 적용하여 예시르 작성하였습니다.
+"Case2_CF_modeling3.ipynb" 파일은 가장 최근 기준으로 cafle_module을 적용하여 재무모델을 작성한 사례입니다.
