@@ -78,6 +78,9 @@ class Cost:
             tmp_dct = self.dct(key)
             return Merge(tmp_dct)
             
+    def __getattr__(self, attr):
+        return self.__dict__[attr]
+            
             
 def flatten_tuple(tpl, crit="_"):
     if type(tpl) == str:

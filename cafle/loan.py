@@ -57,6 +57,7 @@ class Loan(object):
                  rate_IR = 0.0, # float
                  IRcycle = 1, # int, months
                  title = None, # string : "LoanA"
+                 rnk = 0, # int
                  tag = None, # string tuple : ("tagA", "tagB")
                  note = "" # string
                  ):
@@ -88,8 +89,9 @@ class Loan(object):
         self.IRcycle = IRcycle
         self._rate_IR_cycle = rate_IR * self.IRcycle / 12
             
-        # title 입력
+        # title, rank 입력
         self.title = title
+        self.rnk = rnk
         
         # tag 입력 : tag는 튜플로 받음. string으로 입력된 경우 튜플로 변환 필요
         if isinstance(tag, tuple):
@@ -283,6 +285,7 @@ class Intlz_loan:
                  index, # basic index class
                  idxfn = None, # financial index class
                  title = [], # list, loan name
+                 rnk = [], # list, loan rank
                  amt_ntnl = [], # list/float, loan notional amount
                  amt_intl = None,
                  rate_fee = [], # list/float
@@ -297,6 +300,7 @@ class Intlz_loan:
             
         # 주요 변수 입력
         self.title = title
+        self.rnk = rnk
         self.len = len(title)
         self.amt_ntnl = amt_ntnl
         self.amt_intl = amt_intl
@@ -327,6 +331,7 @@ class Intlz_loan:
                              rate_IR = self.rate_IR[i],
                              IRcycle = self.IRcycle[i],
                              title = self.title[i],
+                             rnk = self.rnk[i],
                              tag = self.tag,
                              note = self.note
                              )
@@ -336,3 +341,11 @@ class Intlz_loan:
         self.ttl = Merge_loan(self.dct)
         for i in range(self.len):
             setattr(self.ttl, self.title[i], getattr(self, self.title[i]))
+            
+    def __getitem__(self, val):
+        if type(val) is int:
+            for key, item in self.dct.items():
+                if item.rnk == val:
+                    return item
+        if type(val) is str:
+            return getattr(self, val)
